@@ -133,7 +133,7 @@ function App() {
                   <div>{totals.map(((value, index) => {
                       console.log(numeral(value.distance)._value)
                       return (<div className={'background:brown'}>
-                          <h6>
+                          <h6 className={'progress-text'}>
                               {value.distance}
                           </h6>
                           <ProgressBar animated className={'m-1'}

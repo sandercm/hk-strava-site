@@ -46,3 +46,12 @@
 .dark-text {
   color: black !important;
 }
+.progress-text {
+  color: darkblue;
+  font-size: 20px;
+  text-shadow:
+          0.03em 0 white,
+          0 0.03em white,
+          -0.03em 0 white,
+          0 -0.03em white;
+}
