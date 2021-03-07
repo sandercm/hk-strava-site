@@ -7,6 +7,7 @@ import React, {useEffect, useState} from "react";
 import Card from "react-bootstrap/Card";
 import * as numeral from 'numeral'
 import ProgressBar from "react-bootstrap/ProgressBar";
+import { Line } from 'rc-progress'
 
 function App() {
     const [runners, setRunners] = useState([]);
@@ -29,13 +30,9 @@ function App() {
     }, []);
 
     useEffect(() => {
-        console.log('runners changed, setting totals')
         setTotals(getTotals())
     },[runners])
 
-    // useEffect(() => {
-    //     setTotals(getTotals())
-    // },runners)
 
     const homeRunners = (value, index) => {
         return runners.slice(index*5,index*5+5);
@@ -56,7 +53,6 @@ function App() {
 
     function printTotals() {
         return function () {
-            console.log(homes);
             const ranking = homes.map((value, index) => {
                 return {home: value, distance: getTotal(value,index)}
             })
@@ -73,10 +69,6 @@ function App() {
             return ranking.sort((a,b) =>
                 numeral(b.distance)._value - numeral(a.distance)._value)
         };
-    }
-
-    function getBars(){
-        return
     }
 
     function printCol(begin, end){
@@ -131,21 +123,20 @@ function App() {
               </Col>
               <Col className={'mt-4'}>
                   <div>{totals.map(((value, index) => {
-                      console.log(numeral(value.distance)._value)
                       return (<div className={'background:brown'}>
                           <h6 className={'progress-text'}>
                               {value.distance}
                           </h6>
-                          <ProgressBar animated className={'m-1'}
-                                       now={(numeral(value.distance)._value/numeral(totals[0].distance)._value)*100}
-                                       label={value.home}
+                          <ProgressBar
+                              animated
+                              className={'m-1'}
+                              now={(numeral(value.distance)._value/numeral(totals[0].distance)._value)*100}
+                              label={value.home}
                           />
                       </div>)
                   }))}</div>
               </Col>
           </Row>
-
-
       </Container>
   );
 }

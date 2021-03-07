@@ -50,8 +50,11 @@
   color: darkblue;
   font-size: 20px;
   text-shadow:
-          0.03em 0 white,
-          0 0.03em white,
-          -0.03em 0 white,
-          0 -0.03em white;
+          0.03em 0 ghostwhite,
+          0 0.03em ghostwhite,
+          -0.03em 0 ghostwhite,
+          0 -0.03em ghostwhite;
+}
+.progress-bar {
+  background-color: #033260 !important;
 }
