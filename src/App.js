@@ -33,7 +33,7 @@ function App() {
         // GET request using fetch inside useEffect React hook
         fetch('https://hk-strava.herokuapp.com/runners/name')
             .then(response => response.json())
-            .then(data => setRunnerMap(data.data))
+            .then(data => {setRunnerMap(data)})
     }, []);
 
     useEffect(() => {
@@ -47,11 +47,12 @@ function App() {
             'Home Confabula': [],
             'Savania': []
         }
-        if(runners.length !== 0 || setRunnerMap.length !== 0){
+        if(runners.length !== 0 || runnerMap.length !== 0){
             runners.forEach(runner => {
-                if(runnerMap[runner.athlete_firstname + ' ' + runner.athlete_lastname.slice(0,-1)]){
-                    if(runnerMap[runner.athlete_firstname + ' ' + runner.athlete_lastname.slice(0,-1)]){
-                        homesWithRunners[runnerMap[runner.athlete_firstname + ' ' + runner.athlete_lastname.slice(0,-1)]].push(runner);
+                const name = (runner.athlete_firstname + ' ' + runner.athlete_lastname).toLowerCase()
+                if(runnerMap[name]){
+                    if(runnerMap[name]){
+                        homesWithRunners[runnerMap[name]].push(runner);
                     }
                 }
             })
@@ -106,11 +107,19 @@ function App() {
                                     <h6>Beste 5 lopers</h6>
                                     <ol>
                                         {homeRunners(value, index+begin).map(((value) => {
-                                            return <li>{value.athlete_firstname +
-                                            ' ' +
-                                            value.athlete_lastname +
-                                            '   :  ' +
-                                            numeral(value.distance).format('0.0 a') + 'm'}</li>
+                                            return <li id={value.id}>
+                                                <Row>
+                                                    <Col className={'col-8'}>{value.athlete_firstname +
+                                                    ' ' +
+                                                    value.athlete_lastname +
+                                                    '   :  '
+                                                    }</Col>
+                                                    <Col className={'col-4'}>
+                                                        {numeral(value.distance).format('0.0 a') + 'm'}
+                                                    </Col>
+                                                </Row>
+
+                                            </li>
                                         }))}
                                     </ol>
                                     <h6>totaal: {getTotal(value, index+begin)}</h6>
@@ -138,13 +147,13 @@ function App() {
               </Navbar.Brand>
           </Navbar>
           <Row>
-              <Col>
+              <Col className={'col-8'}>
                   {printCol(0,2)}
                   {printCol(2,4)}
                   {printCol(4,6)}
                   {printCol(6,8)}
               </Col>
-              <Col className={'mt-4'}>
+              <Col className={'mt-4 col-4'}>
                   <div>{totals.map(((value) => {
                       return (<div className={'background:brown'}>
                           <h6 className={'progress-text'}>
