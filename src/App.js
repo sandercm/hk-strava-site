@@ -7,10 +7,11 @@ import React, {useEffect, useState} from "react";
 import Card from "react-bootstrap/Card";
 import * as numeral from 'numeral'
 import ProgressBar from "react-bootstrap/ProgressBar";
-import { Line } from 'rc-progress'
 
 function App() {
     const [runners, setRunners] = useState([]);
+    const [runnerMap, setRunnerMap] = useState([]);
+    const [homesWithRunners, setHomesWithRunners] = useState([]);
     const [totals, setTotals] = useState([]);
     const homes = [
         'Home Vermeylen',
@@ -28,19 +29,52 @@ function App() {
             .then(response => response.json())
             .then(data => setRunners(data.data));
     }, []);
+    useEffect(() => {
+        // GET request using fetch inside useEffect React hook
+        fetch('https://hk-strava.herokuapp.com/runners/name')
+            .then(response => response.json())
+            .then(data => {setRunnerMap(data)})
+    }, []);
+
+    useEffect(() => {
+        const homesWithRunners = {
+            'Home Vermeylen': [],
+            'Home Astrid': [],
+            'Home Boudewijn': [],
+            'Home Bertha': [],
+            'Home Fabiola': [],
+            'Home Mercator': [],
+            'Home Confabula': [],
+            'Savania': []
+        }
+        if(runners.length !== 0 || runnerMap.length !== 0){
+            runners.forEach(runner => {
+                const name = (runner.athlete_firstname + ' ' + runner.athlete_lastname).toLowerCase()
+                if(runnerMap[name]){
+                    if(runnerMap[name]){
+                        homesWithRunners[runnerMap[name]].push(runner);
+                    }
+                }
+            })
+            setHomesWithRunners(homesWithRunners);
+        }
+    },[runners, runnerMap])
 
     useEffect(() => {
         setTotals(getTotals())
-    },[runners])
+    },[runners, homesWithRunners])
 
-
-    const homeRunners = (value, index) => {
-        return runners.slice(index*5,index*5+5);
+    const homeRunners = (value) => {
+        console.log(homesWithRunners[value]);
+        if(homesWithRunners[value]){
+            return homesWithRunners[value].slice(0,5);
+        }
+        return [];
     }
 
-    function getTotal(value, index) {
-        if(homeRunners(value, index).length > 0){
-            return numeral(homeRunners(value, index).map((value, index) => {
+    function getTotal(value) {
+        if(homeRunners(value).length > 0){
+            return numeral(homeRunners(value).map((value) => {
                 return value.distance
             }).reduce((acc,x) => {
                 return acc + x;
@@ -48,17 +82,6 @@ function App() {
         }else{
             return 0;
         }
-    }
-
-
-    function printTotals() {
-        return function () {
-            const ranking = homes.map((value, index) => {
-                return {home: value, distance: getTotal(value,index)}
-            })
-            console.log(ranking.sort((a,b) =>
-                numeral(b.distance)._value - numeral(a.distance)._value))
-        };
     }
 
     function getTotals() {
@@ -72,7 +95,8 @@ function App() {
     }
 
     function printCol(begin, end){
-        return (        <Row className={'pt-3'}>
+        return (
+            <Row className={'pt-3'}>
             {homes.slice(begin,end).map(((value, index) => {
                 return (
                     <Col className={'p-2'}>
@@ -82,12 +106,20 @@ function App() {
                                 <Card.Text>
                                     <h6>Beste 5 lopers</h6>
                                     <ol>
-                                        {homeRunners(value, index+begin).map(((value, index) => {
-                                            return <li>{value.athlete_firstname +
-                                            ' ' +
-                                            value.athlete_lastname +
-                                            '   :  ' +
-                                            numeral(value.distance).format('0.0 a') + 'm'}</li>
+                                        {homeRunners(value, index+begin).map(((value) => {
+                                            return <li id={value.id}>
+                                                <Row>
+                                                    <Col className={'col-8'}>{value.athlete_firstname +
+                                                    ' ' +
+                                                    value.athlete_lastname +
+                                                    '   :  '
+                                                    }</Col>
+                                                    <Col className={'col-4'}>
+                                                        {numeral(value.distance).format('0.0 a') + 'm'}
+                                                    </Col>
+                                                </Row>
+
+                                            </li>
                                         }))}
                                     </ol>
                                     <h6>totaal: {getTotal(value, index+begin)}</h6>
@@ -115,14 +147,14 @@ function App() {
               </Navbar.Brand>
           </Navbar>
           <Row>
-              <Col>
+              <Col className={'col-8'}>
                   {printCol(0,2)}
                   {printCol(2,4)}
                   {printCol(4,6)}
                   {printCol(6,8)}
               </Col>
-              <Col className={'mt-4'}>
-                  <div>{totals.map(((value, index) => {
+              <Col className={'mt-4 col-4'}>
+                  <div>{totals.map(((value) => {
                       return (<div className={'background:brown'}>
                           <h6 className={'progress-text'}>
                               {value.distance}
