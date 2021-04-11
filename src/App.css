@@ -47,14 +47,18 @@
   color: black !important;
 }
 .progress-text {
-  color: darkblue;
+  color: whitesmoke;
   font-size: 20px;
   text-shadow:
-          0.03em 0 ghostwhite,
-          0 0.03em ghostwhite,
-          -0.03em 0 ghostwhite,
-          0 -0.03em ghostwhite;
+          0.03em 0 darkblue,
+          0 0.03em darkblue,
+          -0.03em 0 darkblue,
+          0 -0.03em darkblue;
 }
 .progress-bar {
   background-color: #033260 !important;
+  color: #033260;
+}
+.progress-bar-label {
+  color: #61dafb;
 }
