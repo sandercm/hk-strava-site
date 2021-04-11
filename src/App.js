@@ -157,13 +157,12 @@ function App() {
                   <div>{totals.map(((value) => {
                       return (<div className={'background:brown'}>
                           <h6 className={'progress-text'}>
-                              {value.distance}
+                              {value.home + ':  ' + value.distance}
                           </h6>
                           <ProgressBar
                               animated
                               className={'m-1'}
                               now={(numeral(value.distance)._value/numeral(totals[0].distance)._value)*100}
-                              label={value.home}
                           />
                       </div>)
                   }))}</div>
