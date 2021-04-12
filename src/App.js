@@ -19,8 +19,8 @@ function App() {
         'Home Boudewijn',
         'Home Bertha',
         'Home Fabiola',
-        'Mercator',
-        'Confabula',
+        'Home Mercator',
+        'Home Confabula',
         'Savania']
 
     useEffect(() => {
