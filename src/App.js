@@ -65,20 +65,19 @@ function App() {
     },[runners, homesWithRunners])
 
     const homeRunners = (value) => {
-        console.log(homesWithRunners[value]);
         if(homesWithRunners[value]){
-            return homesWithRunners[value].slice(0,5);
+            return homesWithRunners[value].slice(0,10);
         }
         return [];
     }
 
     function getTotal(value) {
         if(homeRunners(value).length > 0){
-            return numeral(homeRunners(value).map((value) => {
+            return (parseFloat(numeral(homeRunners(value).map((value) => {
                 return value.distance
             }).reduce((acc,x) => {
                 return acc + x;
-            })).format('0.0 a') + 'm'
+            })).format('0.0'))/1000).toFixed(2) + 'km'
         }else{
             return 0;
         }
@@ -104,15 +103,15 @@ function App() {
                             <Card.Body>
                                 <Card.Title>{value}</Card.Title>
                                 <Card.Text>
-                                    <h6>Beste 5 lopers</h6>
+                                    <h6>Beste 10 lopers</h6>
                                     <ol>
                                         {homeRunners(value, index+begin).map(((value) => {
+                                            console.log(value);
                                             return <li id={value.id}>
                                                 <Row>
                                                     <Col className={'col-8'}>{value.athlete_firstname +
                                                     ' ' +
-                                                    value.athlete_lastname +
-                                                    '   :  '
+                                                    value.athlete_lastname
                                                     }</Col>
                                                     <Col className={'col-4'}>
                                                         {numeral(value.distance).format('0.0 a') + 'm'}
