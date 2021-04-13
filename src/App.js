@@ -7,6 +7,7 @@ import React, {useEffect, useState} from "react";
 import Card from "react-bootstrap/Card";
 import * as numeral from 'numeral'
 import ProgressBar from "react-bootstrap/ProgressBar";
+import {Alert} from "react-bootstrap";
 
 function App() {
     const [runners, setRunners] = useState([]);
@@ -145,6 +146,11 @@ function App() {
                   <b>Home Konvent run 2020</b>
               </Navbar.Brand>
           </Navbar>
+          <Row>
+              <Col className={'col-4'}/>
+              <Col className={'col-4 m-2'}><Alert className={'alert-warning'}>Disclaimer: Enkel de top 100 lopers staat op deze pagina. Dus het weergegeven resultaat kan variëren van het effectieve resultaat. Strava update de leaderboard ook maar om de 4 uur dus er kan vertraging zijn.</Alert></Col>
+              <Col className={'col-4'}/>
+          </Row>
           <Row>
               <Col className={'col-8'}>
                   {printCol(0,2)}
