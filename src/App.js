@@ -10,6 +10,9 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import {Alert} from "react-bootstrap";
 
 function App() {
+    let correction_tom = 0;
+    let correction_hanne = 0;
+    let correction_pieter = 0;
     const [runners, setRunners] = useState([]);
     const [runnerMap, setRunnerMap] = useState([]);
     const [homesWithRunners, setHomesWithRunners] = useState([]);
@@ -57,7 +60,36 @@ function App() {
                     }
                 }
             })
+            if(homesWithRunners['Home Confabula'].filter(e => e.athlete_id === 6487075)){
+                homesWithRunners['Home Confabula'].forEach(runner => {
+                    if(runner.athlete_id === 6487075 && correction_tom < 1){
+                        runner.distance -= 25150;
+                        correction_tom += 1;
+                        homesWithRunners['Home Confabula'].sort(compare);
+                    }
+                })
+            }
+            if(homesWithRunners['Home Confabula'].filter(e => e.athlete_id === 83153582)){
+                homesWithRunners['Home Confabula'].forEach(runner => {
+                    if(runner.athlete_id === 83153582 && correction_hanne < 1){
+                        runner.distance -= 10290;
+                        correction_hanne += 1;
+                        homesWithRunners['Home Confabula'].sort(compare);
+                    }
+                })
+            }
+            if(homesWithRunners['Home Confabula'].filter(e => e.athlete_id === 55297387)){
+                homesWithRunners['Home Confabula'].forEach(runner => {
+                    if(runner.athlete_id === 55297387 && correction_pieter < 1){
+                        runner.distance -= 5000;
+                        correction_pieter += 1;
+                        homesWithRunners['Home Confabula'].sort(compare);
+                    }
+                })
+            }
             setHomesWithRunners(homesWithRunners);
+
+            console.log(homesWithRunners);
         }
     },[runners, runnerMap])
 
@@ -107,7 +139,6 @@ function App() {
                                     <h6>Beste 10 lopers</h6>
                                     <ol>
                                         {homeRunners(value, index+begin).map(((value) => {
-                                            console.log(value);
                                             return <li id={value.id}>
                                                 <Row>
                                                     <Col className={'col-8'}>{value.athlete_firstname +
@@ -143,12 +174,12 @@ function App() {
                       height="30"
                       className="d-inline-block align-top"
                   />{' '}
-                  <b>Home Konvent run 2020</b>
+                  <b>Home Konvent run 2021</b>
               </Navbar.Brand>
           </Navbar>
           <Row>
               <Col className={'col-4'}/>
-              <Col className={'col-4 m-2'}><Alert className={'alert-warning'}>Disclaimer: Enkel de top 100 lopers staat op deze pagina. Dus het weergegeven resultaat kan variëren van het effectieve resultaat. Strava update de leaderboard ook maar om de 4 uur dus er kan vertraging zijn.</Alert></Col>
+              <Col className={'col-4 m-2'}><Alert className={'alert-warning'}>Disclaimer: Enkel de top 100 lopers staat op deze pagina. Dus het weergegeven resultaat kan variëren van het effectieve resultaat. Strava updatet de leaderboard ook maar om de 4 uur, dus er kan vertraging zijn.</Alert></Col>
               <Col className={'col-4'}/>
           </Row>
           <Row>
@@ -175,6 +206,15 @@ function App() {
           </Row>
       </Container>
   );
+}
+function compare( a, b ) {
+    if ( a.distance < b.distance ){
+        return 1;
+    }
+    if ( a.distance > b.distance ){
+        return -1;
+    }
+    return 0;
 }
 
 export default App;
