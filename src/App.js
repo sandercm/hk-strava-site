@@ -72,7 +72,7 @@ function App() {
             if(homesWithRunners['Home Confabula'].filter(e => e.athlete_id === 83153582)){
                 homesWithRunners['Home Confabula'].forEach(runner => {
                     if(runner.athlete_id === 83153582 && correction_hanne < 1){
-                        runner.distance -= 10290;
+                        runner.distance = 87000;
                         correction_hanne += 1;
                         homesWithRunners['Home Confabula'].sort(compare);
                     }
