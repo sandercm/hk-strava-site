@@ -87,6 +87,14 @@ function App() {
                     }
                 })
             }
+            if(homesWithRunners['Home Boudewijn'].filter(e => e.athlete_id === 79737984)){
+                homesWithRunners['Home Boudewijn'].forEach(runner => {
+                    if(runner.athlete_id === 79737984){
+                        runner.distance = 0;
+                        homesWithRunners['Home Boudewijn'].sort(compare);
+                    }
+                })
+            }
             setHomesWithRunners(homesWithRunners);
 
             console.log(homesWithRunners);
